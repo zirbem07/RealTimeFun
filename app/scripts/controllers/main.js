@@ -12,6 +12,7 @@ angular.module('realTimeTriviaApp')
 
         //reference to firebase
         var questionsRef = new Firebase("https://maxwellzirbel.firebaseio.com/questions");
+        $scope.q = [];
 
         //these items will get added to the firebase
         $scope.makeList = function(ref) {
@@ -38,8 +39,12 @@ angular.module('realTimeTriviaApp')
 
         $scope.questions = $firebase(questionsRef);
 
-        //removes the first item from firebase... or maybe all of them
+        //this gets the first item and then deletes all of them. needs work.
         $scope.answer = function() {
+            $scope.getFirstFromList(questionsRef, function (val) {
+                $scope.q.push(val);
+            });
+            console.log($scope.q);
             questionsRef.remove().limit(1);
         }
 
