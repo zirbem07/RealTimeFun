@@ -77,3 +77,9 @@ body {
     border-bottom: 0;
   }
 }
+
+/*TEAM GENERATED STYLES */
+.chat{
+  max-height:400px;
+  overflow-y:scroll;
+}

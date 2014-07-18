@@ -1,6 +1,14 @@
 <div class="well" ng-init="init()">
     <h2>{{quests.q}}</h2>
 </div>
-<button class="btn btn-success" ng-click="answer()">Answer!</button>
+<div class="well chat">
+    
+</div>
 
-<button class="btn btn-success" ng-click="addQuestions()">Add Questions!</button>
+<div class="form-group">
+	 <div class="col-sm-10">
+		<input type="text" class="form-control textAnswer" ng-model="userAnswer" placeholder="Enter Answer" />
+	</div>
+	<button class="btn btn-primary" ng-click="answer()">Answer!</button>
+    <button class="btn btn-success" ng-click="addQuestions()">Add Questions!</button>
+</div>
