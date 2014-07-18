@@ -132,15 +132,16 @@ angular.module('realTimeTriviaApp')
         }
 
         $scope.answerCheck = function(){
-
+            //get answer from chat input
             var answer = $scope.userAnswer;
             answersRef.push({username: user.username, answer: answer});
             //after setting answer, retrieve it from firebase one time
-            answersRef.on('child_added', function(snapshot){
+            answersRef.once('value', function(snapshot){
                  $scope.answerObj = snapshot.val();
                  console.log($scope.answerObj);
+                 $scope.answerArr = [];
                  $scope.answerArr.push($scope.answerObj);
-                 console.log("answerArr = " + $scope.answerArr);
+                 console.log($scope.answerArr);
                 //     $('.chat').append('<li>' + data.username + ': ' + data.answer + '</li>');
                 // });
                 //this will make it so the chat box is always scrolled to the bottom to see newest additions
