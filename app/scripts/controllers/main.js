@@ -136,6 +136,7 @@ angular.module('realTimeTriviaApp')
             var answer = $scope.userAnswer;
             answersRef.push({username: user.username, answer: answer});
             //after setting answer, retrieve it from firebase one time
+
             answersRef.once('value', function(snapshot){
                  $scope.answerObj = snapshot.val();
                  console.log($scope.answerObj);
