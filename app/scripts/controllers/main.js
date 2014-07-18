@@ -18,9 +18,12 @@ angular.module('realTimeTriviaApp')
         $scope.currentKey = '';
         $scope.userAnswer = '';
         $scope.answerArr = [];
+        $scope.rating = 3;
         $scope.questions = $firebase(questionsRef);
         $scope.answers = $firebase(answersRef);
         console.log($scope.answers);
+
+
         $scope.init = function() {
             $scope.data = $scope.questions;
             //binds firebase to controller
@@ -50,6 +53,7 @@ angular.module('realTimeTriviaApp')
                 console.log($scope.currentKey);
                 $scope.quests = $scope.data[key];
                 $scope.currentKey = key;
+                $scope.rating = 3;//$scope.data[key].difficulty;
             });
         };
 
@@ -60,6 +64,7 @@ angular.module('realTimeTriviaApp')
                 console.log($scope.currentKey);
                 $scope.quests = $scope.data[key];
                 $scope.currentKey = key;
+                $scope.rating = 5; //$scope.data[key].difficulty;
             });
         };
 
@@ -158,7 +163,6 @@ angular.module('realTimeTriviaApp')
         //this gets the first item and then deletes all of them. needs work.
         $scope.answer = function() {
             $scope.userAnswer=$filter('uppercase')($scope.userAnswer);
-            alert($scope.userAnswer + "   " + $scope.currentKey.answer);
             if($scope.userAnswer == $scope.currentKey.answer){
                 $scope.questions.$remove($scope.currentKey);
             }

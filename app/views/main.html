@@ -1,4 +1,9 @@
-<h1><strong>Category: </strong>{{quests.category}}</h1>
+
+<h3><strong>Category: </strong>{{quests.category}}</h3>
+<h4><strong>Difficulty: </strong>
+    <rating ng-model="rating" max="5" readonly="false"></rating>
+</h4>
+
 <div class="well" ng-init="init()">
     <h2>{{quests.q}}</h2>
 </div>
