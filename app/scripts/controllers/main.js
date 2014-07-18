@@ -66,10 +66,66 @@ angular.module('realTimeTriviaApp')
         //these items will get added to the firebase
         $scope.addQuestions = function() {
             $scope.q = [
-                {q: "This is question 1", answer: 1, level: 3},
-                {q: "this is question 2", answer: 1, level: 3},
-                {q: "I will make these objects", answer: 1, level: 4},
-                {q: "eventually", answer: 1, level: 2}];
+                {
+                    "category": "animal",
+                    "answer": " REINDEER",
+                    "difficulty": 1,
+                    "q": "What is the only kind of deer whose females have antlers?"
+                },
+                {
+                    "category": "animal",
+                    "answer": " DRONES",
+                    "difficulty": 1,
+                    "q": "In the insect world, certain male bees have the enviable task of performing no work. Their primary function is to mate with the queen bee. What are they called?"
+                },
+                {
+                    "category": "animal",
+                    "answer": " FROGS or toads",
+                    "difficulty": 1,
+                    "q": "What are two common names for jumping, tailless amphibia?"
+                },
+                {
+                    "category": "animal",
+                    "answer": " GERMAN SHEPHERDS / LABRADOR RETRIEVERS, GOLDEN RETRIEVERS",
+                    "difficulty": 1,
+                    "q": "What two breeds of dog are most commonly used as seeing-eye dogs or guide dogs for the blind?"
+                },
+                {
+                    "category": "animal",
+                    "answer": "Wandering albatross",
+                    "difficulty": 1,
+                    "q": " With a wing-span of 3.6 meters, or almost 12 feet, what living bird, found mostly in the southern hemisphere, has the largest wingspan?"
+                },
+                {
+                    "category": "animal",
+                    "answer": " CATERPILLAR",
+                    "difficulty": 1,
+                    "q": "From the French term chatepelose, meaning hairy cat,\" comes the appropriate name of what insect?"
+                },
+                {
+                    "category": "animal",
+                    "answer": "GALAPAGOS",
+                    "difficulty": 1,
+                    "q": "Most penguins live in the southernmost lands on earth, such as Antarctica, New Zealand, Australia, and South Africa, and mostly in cold climates, but some penguins can also be found on which islands in the Pacific Ocean near the equator?"
+                },
+                {
+                    "category": "animal",
+                    "answer": "GIRAFFEs",
+                    "difficulty": 1,
+                    "q": "New born babies of what animal are six feet tall and weigh almost 200 pounds?"
+                },
+                {
+                    "category": "animal",
+                    "answer": "AARDVARK",
+                    "difficulty": 1,
+                    "q": "What is the first animal listed in the dictionary?"
+                },
+                {
+                    "category": "animal",
+                    "answer": " KANGAROO",
+                    "difficulty": 1,
+                    "q": "A \"joey\" is the baby of what animal?"
+                }];
             for (var i = 0; i < $scope.q.length; i++) {
                 $scope.questions.$add($scope.q[i]);
             }
