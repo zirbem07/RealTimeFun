@@ -10,7 +10,23 @@
 
 angular.module('realTimeTriviaApp')
   .controller('MainCtrl', function ($scope, $firebase) {
+     //references to firebase
+        var answersRef = new Firebase('https://maxwellzirbel.firebaseio.com/answers')
+        var questionsRef = new Firebase("https://maxwellzirbel.firebaseio.com/questions");
 
+        $scope.quests = '';
+        $scope.currentKey = '';
+        $scope.answerArr = [];
+    $scope.questions = $firebase(questionsRef);
+    $scope.answers = $firebase(answersRef);
+    console.log($scope.answers);
+    $scope.init = function() {
+            $scope.data = $scope.questions;
+            //binds firebase to controller
+            $scope.data.$on('loaded', $scope.getFirst);
+            $scope.data.$on('change', $scope.update);
+            $scope.answers.$on('change', $scope.answerCheck);
+        }
 
     var chatRef = new Firebase('https://maxwellzirbel.firebaseio.com/');
     var auth = new FirebaseSimpleLogin(chatRef, function(error, user) {
@@ -21,35 +37,18 @@ angular.module('realTimeTriviaApp')
 
         // user authenticated with Firebase, PUT ALL MAIN STUFF HERE-------------------------------------
         console.log(user)   
-        //references to firebase
-        var answersRef = new Firebase('https://maxwellzirbel.firebaseio.com/answers')
-        var questionsRef = new Firebase("https://maxwellzirbel.firebaseio.com/questions");
-        $scope.q = [];
+       
+       
 
-        //reference to firebase
-        var answersRef = new Firebase('https://maxwellzirbel.firebaseio.com/answers');
-        var questionsRef = new Firebase("https://maxwellzirbel.firebaseio.com/questions").limit(1);
-        $scope.questions = $firebase(questionsRef);
-        $scope.quests = '';
-        $scope.keyR = '';
-
-
-        $scope.init = function() {
-            alert("I got called");
-            $scope.data = $scope.questions;
-
-            $scope.data.$on('loaded', $scope.getFirst);
-            $scope.data.$on('change', $scope.update);
-        }
         
 
         $scope.getFirst= function(){
             var keys = $scope.data.$getIndex();
             keys.forEach(function(key, i) {
                 console.log(i, $scope.data[key]); // Prints items in order they appear in Firebase.
-                console.log($scope.keyR);
+                console.log($scope.currentKey);
                 $scope.quests = $scope.data[key];
-                $scope.keyR = key;
+                $scope.currentKey = key;
             });
         };
 
@@ -57,9 +56,9 @@ angular.module('realTimeTriviaApp')
             var keys = $scope.data.$getIndex();
             keys.forEach(function(key, i) {
                 console.log("in update:  " + i, $scope.data[key]); // Prints items in order they appear in Firebase.
-                console.log($scope.keyR);
+                console.log($scope.currentKey);
                 $scope.quests = $scope.data[key];
-                $scope.keyR = key;
+                $scope.currentKey = key;
             });
         };
 
@@ -131,39 +130,36 @@ angular.module('realTimeTriviaApp')
             }
         }
 
-
-        //this gets the first item and then deletes all of them. needs work.
-        $scope.answer = function() {
-            //alert($scope.keyR[0]);
-            $scope.questions.$remove($scope.keyR);
+        $scope.answerCheck = function(){
 
             var answer = $scope.userAnswer;
             answersRef.set({username: user.username, answer: answer});
             //after setting answer, retrieve it from firebase one time
             answersRef.once('value', function(snapshot){
-                var data = snapshot.val();
-                $('.chat').append('<li>' + data.username + ': ' + data.answer + '</li>');
+                 $scope.answerObj = snapshot.val();
+                 $scope.answerArr.push($scope.answerObj);
+                 console.log("answerArr = " + $scope.answerArr);
+                //     $('.chat').append('<li>' + data.username + ': ' + data.answer + '</li>');
+                // });
+                //this will make it so the chat box is always scrolled to the bottom to see newest additions
+                $('.chat li:last-child').show('fast', function(){
+                    $('.chat').animate({
+                        scrollTop: $('.chat')[0].scrollHeight}, 'fast');
+                    });
+                //reset userAnswer input box
+                $scope.userAnswer = '';
             });
-            //this will make it so the chat box is always scrolled to the bottom to see newest additions
-            $('.chat li:last-child').show('fast', function(){
-                $('.chat').animate({
-                    scrollTop: $('.chat')[0].scrollHeight}, 'fast');
-                });
-            //reset userAnswer input box
-            $scope.userAnswer = '';
+        }
 
-            $scope.getFirstFromList(questionsRef, function (val) {
-                $scope.q.push(val);
-                console.log($scope.q);
-            });
-            console.log($scope.q);
-            questionsRef.remove().limit(1);
-            
+        //this gets the first item and then deletes all of them. needs work.
+        $scope.answer = function() {
+            $scope.questions.$remove($scope.currentKey);  
         };
+
         //if user hits 'enter' to submit, call answer function, reset input text
         $('.textAnswer').on('keypress', function(e){
             if(e.keyCode == 13){
-                $scope.answer();
+                $scope.answerCheck();
                 $(this).val('');
             }
         });
