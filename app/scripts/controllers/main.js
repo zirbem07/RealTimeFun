@@ -49,8 +49,9 @@ angular.module('realTimeTriviaApp')
         $scope.getFirst= function(){
             var keys = $scope.data.$getIndex();
             keys.forEach(function(key, i) {
-                console.log(i, $scope.data[key]); // Prints items in order they appear in Firebase.
-                console.log($scope.currentKey);
+                // Prints items in order they appear in Firebase.
+                // console.log(i, $scope.data[key]);
+                // console.log($scope.currentKey);
                 $scope.quests = $scope.data[key];
                 $scope.currentKey = key;
                 $scope.rating = 3;//$scope.data[key].difficulty;
@@ -60,8 +61,9 @@ angular.module('realTimeTriviaApp')
         $scope.update = function(){
             var keys = $scope.data.$getIndex();
             keys.forEach(function(key, i) {
-                console.log("in update:  " + i, $scope.data[key]); // Prints items in order they appear in Firebase.
-                console.log($scope.currentKey);
+                // Prints items in order they appear in Firebase.
+                // console.log("in update:  " + i, $scope.data[key]); 
+                // console.log($scope.currentKey);
                 $scope.quests = $scope.data[key];
                 $scope.currentKey = key;
                 $scope.rating = 5; //$scope.data[key].difficulty;
@@ -135,29 +137,34 @@ angular.module('realTimeTriviaApp')
                 $scope.questions.$add($scope.q[i]);
             }
         }
-
-        $scope.answerCheck = function(){
+        $scope.submitAnswer = function(){
             //get answer from chat input
             var answer = $scope.userAnswer;
-            answersRef.push({username: user.username, answer: answer});
-            //after setting answer, retrieve it from firebase one time
 
-            answersRef.once('value', function(snapshot){
-                 $scope.answerObj = snapshot.val();
-                 console.log($scope.answerObj);
-                 $scope.answerArr = [];
-                 $scope.answerArr.push($scope.answerObj);
-                 console.log($scope.answerArr);
-                //     $('.chat').append('<li>' + data.username + ': ' + data.answer + '</li>');
-                // });
-                //this will make it so the chat box is always scrolled to the bottom to see newest additions
-                $('.chat li:last-child').show('fast', function(){
-                    $('.chat').animate({
-                        scrollTop: $('.chat')[0].scrollHeight}, 'fast');
-                    });
-                //reset userAnswer input box
-                $scope.userAnswer = '';
-            });
+            $scope.answers.$add({username: user.username, answer: answer});
+            $scope.userAnswer = '';
+        }
+        $scope.answerCheck = function(){
+            var answers = $scope.answers
+            console.log(answers);
+            $scope.answerArr = [];
+            //after setting answer, retrieve it from firebase one 
+            for (var key in answers){
+                var obj = answers[key];
+                console.log(answers[key]);
+                for(var prop in obj){
+                    console.log(prop);
+                    if(prop == 'answer'){
+                        $scope.answerArr.push(obj);
+                    }
+                }
+            }
+            console.log($scope.answerArr);
+            //this will make it so the chat box is always scrolled to the bottom to see newest additions
+            $('.chat li:last-child').show('fast', function(){
+                $('.chat').animate({
+                    scrollTop: $('.chat')[0].scrollHeight}, 'fast');
+                });
         }
 
         //this gets the first item and then deletes all of them. needs work.
@@ -171,7 +178,7 @@ angular.module('realTimeTriviaApp')
         //if user hits 'enter' to submit, call answer function, reset input text
         $('.textAnswer').on('keypress', function(e){
             if(e.keyCode == 13){
-                $scope.answerCheck();
+                $scope.submitAnswer();
                 $(this).val('');
             }
         });
