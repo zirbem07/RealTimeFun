@@ -27,6 +27,7 @@ angular.module('realTimeTriviaApp')
         $scope.init = function() {
             $scope.data = $scope.questions;
             //binds firebase to controller
+            $scope.answers.$remove();
             $scope.data.$on('loaded', $scope.getFirst);
             $scope.data.$on('change', $scope.update);
             $scope.answers.$on('change', $scope.answerCheck);
