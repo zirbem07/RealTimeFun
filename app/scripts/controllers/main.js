@@ -170,8 +170,10 @@ angular.module('realTimeTriviaApp')
         //this gets the first item and then deletes all of them. needs work.
         $scope.answer = function() {
             $scope.userAnswer=$filter('uppercase')($scope.userAnswer);
-            if($scope.userAnswer == $scope.currentKey.answer){
+            $scope.quests.answer = $scope.quests.answer.trim();
+            if($scope.userAnswer == $scope.quests.answer) {
                 $scope.questions.$remove($scope.currentKey);
+                $scope.quests.answer = '';
             }
         };
 
