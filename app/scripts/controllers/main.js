@@ -9,18 +9,19 @@
  */
 
 angular.module('realTimeTriviaApp')
-  .controller('MainCtrl', function ($scope, $firebase) {
+  .controller('MainCtrl', function ($scope, $firebase, $filter) {
      //references to firebase
         var answersRef = new Firebase('https://maxwellzirbel.firebaseio.com/answers')
         var questionsRef = new Firebase("https://maxwellzirbel.firebaseio.com/questions");
 
         $scope.quests = '';
         $scope.currentKey = '';
+        $scope.userAnswer = '';
         $scope.answerArr = [];
-    $scope.questions = $firebase(questionsRef);
-    $scope.answers = $firebase(answersRef);
-    console.log($scope.answers);
-    $scope.init = function() {
+        $scope.questions = $firebase(questionsRef);
+        $scope.answers = $firebase(answersRef);
+        console.log($scope.answers);
+        $scope.init = function() {
             $scope.data = $scope.questions;
             //binds firebase to controller
             $scope.data.$on('loaded', $scope.getFirst);
@@ -109,7 +110,7 @@ angular.module('realTimeTriviaApp')
                 },
                 {
                     "category": "animal",
-                    "answer": "GIRAFFEs",
+                    "answer": "GIRAFFE",
                     "difficulty": 1,
                     "q": "New born babies of what animal are six feet tall and weigh almost 200 pounds?"
                 },
@@ -153,7 +154,11 @@ angular.module('realTimeTriviaApp')
 
         //this gets the first item and then deletes all of them. needs work.
         $scope.answer = function() {
-            $scope.questions.$remove($scope.currentKey);  
+            $scope.userAnswer=$filter('uppercase')($scope.userAnswer);
+            alert($scope.userAnswer + "   " + $scope.currentKey.answer);
+            if($scope.userAnswer == $scope.currentKey.answer){
+                $scope.questions.$remove($scope.currentKey);
+            }
         };
 
         //if user hits 'enter' to submit, call answer function, reset input text
