@@ -134,10 +134,11 @@ angular.module('realTimeTriviaApp')
         $scope.answerCheck = function(){
 
             var answer = $scope.userAnswer;
-            answersRef.set({username: user.username, answer: answer});
+            answersRef.push({username: user.username, answer: answer});
             //after setting answer, retrieve it from firebase one time
-            answersRef.once('value', function(snapshot){
+            answersRef.on('child_added', function(snapshot){
                  $scope.answerObj = snapshot.val();
+                 console.log($scope.answerObj);
                  $scope.answerArr.push($scope.answerObj);
                  console.log("answerArr = " + $scope.answerArr);
                 //     $('.chat').append('<li>' + data.username + ': ' + data.answer + '</li>');
