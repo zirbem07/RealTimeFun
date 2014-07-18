@@ -18,9 +18,9 @@ angular.module('realTimeTriviaApp')
         // an error occurred while attempting login
         console.log(error);
       } else if (user) {
-        // user authenticated with Firebase 
+        // user authenticated with Firebase, PUT ALL MAIN STUFF HERE-------------------------------------
         console.log(user)   
-        //reference to firebase
+        //references to firebase
         var answersRef = new Firebase('https://maxwellzirbel.firebaseio.com/answers')
         var questionsRef = new Firebase("https://maxwellzirbel.firebaseio.com/questions");
         $scope.q = [];
@@ -54,16 +54,17 @@ angular.module('realTimeTriviaApp')
         $scope.answer = function() {
             var answer = $scope.userAnswer;
             answersRef.set({username: user.username, answer: answer});
-            answersRef.on('value', function(snapshot){
+            //after setting answer, retrieve it from firebase one time
+            answersRef.once('value', function(snapshot){
                 var data = snapshot.val();
-                console.log(data);
                 $('.chat').append('<li>' + data.username + ': ' + data.answer + '</li>');
             });
-            
-            $('.chat li:last-child').show('slow', function(){
+            //this will make it so the chat box is always scrolled to the bottom to see newest additions
+            $('.chat li:last-child').show('fast', function(){
                 $('.chat').animate({
-                    scrollTop: $('.chat')[0].scrollHeight}, 'slow');
+                    scrollTop: $('.chat')[0].scrollHeight}, 'fast');
                 });
+            //reset userAnswer input box
             $scope.userAnswer = '';
 
             $scope.getFirstFromList(questionsRef, function (val) {
@@ -81,16 +82,10 @@ angular.module('realTimeTriviaApp')
                 $(this).val('');
             }
         });
-        $('.chat').scrollTop($('.chat')[0].scrollHeight);
-
-
 
           } else {
             // user is logged out
+
           }
         });
-
-        
-
-
   });
