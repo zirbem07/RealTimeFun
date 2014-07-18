@@ -135,6 +135,7 @@ angular.module('realTimeTriviaApp')
         $scope.submitAnswer = function(){
             //get answer from chat input
             var answer = $scope.userAnswer;
+
             $scope.answers.$add({username: user.username, answer: answer});
             $scope.userAnswer = '';
         }
@@ -153,21 +154,12 @@ angular.module('realTimeTriviaApp')
                     }
                 }
             }
-
             console.log($scope.answerArr);
-            // answersRef.once('value', function(snapshot){
-            //      $scope.answerObj = snapshot.val();
-            //      console.log($scope.answerObj);
-            //      $scope.answerArr = [];
-            //      $scope.answerArr.push($scope.answerObj);
-            //      console.log($scope.answerArr);
-                //     $('.chat').append('<li>' + data.username + ': ' + data.answer + '</li>');
-                // });
-                //this will make it so the chat box is always scrolled to the bottom to see newest additions
-                $('.chat li:last-child').show('fast', function(){
-                    $('.chat').animate({
-                        scrollTop: $('.chat')[0].scrollHeight}, 'fast');
-                    });
+            //this will make it so the chat box is always scrolled to the bottom to see newest additions
+            $('.chat li:last-child').show('fast', function(){
+                $('.chat').animate({
+                    scrollTop: $('.chat')[0].scrollHeight}, 'fast');
+                });
         }
 
         //this gets the first item and then deletes all of them. needs work.
