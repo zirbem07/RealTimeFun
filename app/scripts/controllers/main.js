@@ -11,8 +11,8 @@
 angular.module('realTimeTriviaApp')
   .controller('MainCtrl', function ($scope, $firebase, $filter) {
      //references to firebase
-        var answersRef = new Firebase('https://maxwellzirbel.firebaseio.com/answers')
-        var questionsRef = new Firebase("https://maxwellzirbel.firebaseio.com/questions");
+        var answersRef = new Firebase('https://maxwellzirbel.firebaseio.com/answers');
+        var questionsRef = new Firebase('https://maxwellzirbel.firebaseio.com/questions');
 
         $scope.quests = '';
         $scope.currentKey = '';
@@ -41,7 +41,7 @@ angular.module('realTimeTriviaApp')
       } else if (user) {
 
         // user authenticated with Firebase, PUT ALL MAIN STUFF HERE-------------------------------------
-        console.log(user)   
+        console.log(user);
        
        
 
@@ -63,7 +63,7 @@ angular.module('realTimeTriviaApp')
             var keys = $scope.data.$getIndex();
             keys.forEach(function(key, i) {
                 // Prints items in order they appear in Firebase.
-                // console.log("in update:  " + i, $scope.data[key]); 
+                // console.log('in update:  ' + i, $scope.data[key]); 
                 // console.log($scope.currentKey);
                 $scope.quests = $scope.data[key];
                 $scope.currentKey = key;
@@ -75,78 +75,61 @@ angular.module('realTimeTriviaApp')
         $scope.addQuestions = function() {
             $scope.q = [
                 {
-                    "category": "animal",
-                    "answer": " REINDEER",
-                    "difficulty": 1,
-                    "q": "What is the only kind of deer whose females have antlers?"
+                    'category': 'animal',
+                    'answer': ' REINDEER',
+                    'difficulty': 1,
+                    'q': 'Taplow United Football Club is an English football club based in the village of Taplow, in the county of Buckinghamshire.'
                 },
                 {
-                    "category": "animal",
-                    "answer": " DRONES",
-                    "difficulty": 1,
-                    "q": "In the insect world, certain male bees have the enviable task of performing no work. Their primary function is to mate with the queen bee. What are they called?"
+                    'category': 'animal',
+                    'answer': ' DRONES',
+                    'difficulty': 1,
+                    'q': 'Jeff Swampy Marsh is an American television director, writer, producer, storyboard artist, and actor associated with several animated television series. Marsh was born in Santa Monica, California, where he grew up with a heavily blended family dynamic.'
                 },
                 {
-                    "category": "animal",
-                    "answer": " FROGS or toads",
-                    "difficulty": 1,
-                    "q": "What are two common names for jumping, tailless amphibia?"
+                    'category': 'animal',
+                    'answer': ' FROGS or toads',
+                    'difficulty': 1,
+                    'q': 'hello'
                 },
                 {
-                    "category": "animal",
-                    "answer": " GERMAN SHEPHERDS / LABRADOR RETRIEVERS, GOLDEN RETRIEVERS",
-                    "difficulty": 1,
-                    "q": "What two breeds of dog are most commonly used as seeing-eye dogs or guide dogs for the blind?"
+                    'category': 'animal',
+                    'answer': ' GERMAN SHEPHERDS / LABRADOR RETRIEVERS, GOLDEN RETRIEVERS',
+                    'difficulty': 1,
+                    'q': 'It is filed in the office of the clerk of the court to commence the action. It is in the form of a petition addressed to the judge of the court by name, setting forth the nature and facts of the claim and containing a prayer that process issue in the proper manner.'
                 },
                 {
-                    "category": "animal",
-                    "answer": "Wandering albatross",
-                    "difficulty": 1,
-                    "q": " With a wing-span of 3.6 meters, or almost 12 feet, what living bird, found mostly in the southern hemisphere, has the largest wingspan?"
+                    'category': 'animal',
+                    'answer': 'MAX',
+                    'difficulty': 1,
+                    'q': ' Palacio was born and raised in Los Angeles, California, to Belizean parents and is a Belizean citizen.'
                 },
                 {
-                    "category": "animal",
-                    "answer": " CATERPILLAR",
-                    "difficulty": 1,
-                    "q": "From the French term chatepelose, meaning hairy cat,\" comes the appropriate name of what insect?"
+                    'category': 'animal',
+                    'answer': ' CATERPILLAR',
+                    'difficulty': 1,
+                    'q': 'Being There is an album by Norwegian jazz pianist and composer Tord Gustavsen'
                 },
                 {
-                    "category": "animal",
-                    "answer": "GALAPAGOS",
-                    "difficulty": 1,
-                    "q": "Most penguins live in the southernmost lands on earth, such as Antarctica, New Zealand, Australia, and South Africa, and mostly in cold climates, but some penguins can also be found on which islands in the Pacific Ocean near the equator?"
-                },
-                {
-                    "category": "animal",
-                    "answer": "GIRAFFE",
-                    "difficulty": 1,
-                    "q": "New born babies of what animal are six feet tall and weigh almost 200 pounds?"
-                },
-                {
-                    "category": "animal",
-                    "answer": "AARDVARK",
-                    "difficulty": 1,
-                    "q": "What is the first animal listed in the dictionary?"
-                },
-                {
-                    "category": "animal",
-                    "answer": " KANGAROO",
-                    "difficulty": 1,
-                    "q": "A \"joey\" is the baby of what animal?"
+                    'category': 'animal',
+                    'answer': 'GALAPAGOS',
+                    'difficulty': 1,
+                    'q': 'I believe in the profession of Journalism.'
                 }];
+
             for (var i = 0; i < $scope.q.length; i++) {
                 $scope.questions.$add($scope.q[i]);
             }
-        }
+        };
         $scope.submitAnswer = function(){
             //get answer from chat input
             var answer = $scope.userAnswer;
 
             $scope.answers.$add({username: user.username, answer: answer});
             $scope.userAnswer = '';
-        }
+        };
         $scope.answerCheck = function(){
-            var answers = $scope.answers
+            var answers = $scope.answers;
             console.log(answers);
             $scope.answerArr = [];
             //after setting answer, retrieve it from firebase one 
@@ -171,8 +154,11 @@ angular.module('realTimeTriviaApp')
         //this gets the first item and then deletes all of them. needs work.
         $scope.answer = function() {
             $scope.userAnswer=$filter('uppercase')($scope.userAnswer);
-            $scope.quests.answer = $scope.quests.answer.trim();
-            if($scope.userAnswer == $scope.quests.answer) {
+            $scope.realAnswer=$filter('uppercase')($scope.quests.q);
+            //$scope.quests.answer = $scope.quests.answer.trim();
+            console.log($scope.userAnswer);
+            console.log($scope.realAnswer);
+            if($scope.userAnswer == $scope.realAnswer) {
                 $scope.questions.$remove($scope.currentKey);
                 $scope.quests.answer = '';
             }
