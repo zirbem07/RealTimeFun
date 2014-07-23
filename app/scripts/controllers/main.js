@@ -7,7 +7,22 @@
  * # MainCtrl
  * Controller of the realTimeTriviaApp
  */
-
+angular.module('realTimeTriviaApp')
+    .directive('onEnter',function() {
+        var linkFn = function(scope,element,attrs) {
+            element.bind("keypress", function(event) {
+                if(event.which === 13) {
+                    scope.$apply(function() {
+                        scope.$eval(attrs.onEnter);
+                    });
+                    event.preventDefault();
+                }
+            });
+        };
+        return {
+            link:linkFn
+        };
+    });
 angular.module('realTimeTriviaApp')
   .controller('MainCtrl', function ($scope, $firebase, $filter) {
      //references to firebase
@@ -141,26 +156,27 @@ angular.module('realTimeTriviaApp')
         $scope.submitAnswer = function(){
             //get answer from chat input
             var answer = $scope.userAnswer;
-
+            //submit answer to firebase and clear input
             $scope.answers.$add({username: user.username, answer: answer});
+            $scope.answer();
             $scope.userAnswer = '';
-        }
+
+        };
+        //on answers firebase change, this function gets called
         $scope.answerCheck = function(){
-            var answers = $scope.answers
-            console.log(answers);
+            var answers = $scope.answers;
+//            console.log(answers);
             $scope.answerArr = [];
             //after setting answer, retrieve it from firebase one 
             for (var key in answers){
                 var obj = answers[key];
-                console.log(answers[key]);
+//                console.log(answers[key]);
                 for(var prop in obj){
-                    console.log(prop);
                     if(prop == 'answer'){
                         $scope.answerArr.push(obj);
                     }
                 }
             }
-            console.log($scope.answerArr);
             //this will make it so the chat box is always scrolled to the bottom to see newest additions
             $('.chat li:last-child').show('fast', function(){
                 $('.chat').animate({
@@ -170,6 +186,8 @@ angular.module('realTimeTriviaApp')
 
         //this gets the first item and then deletes all of them. needs work.
         $scope.answer = function() {
+
+            console.log($scope.userAnswer);
             $scope.userAnswer=$filter('uppercase')($scope.userAnswer);
             $scope.quests.answer = $scope.quests.answer.trim();
             if($scope.userAnswer == $scope.quests.answer) {
