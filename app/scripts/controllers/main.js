@@ -173,7 +173,7 @@ angular.module('realTimeTriviaApp')
             console.log($scope.userAnswer);
             $scope.userAnswer=$filter('uppercase')($scope.userAnswer);
             $scope.realAnswer=$filter('uppercase')($scope.quests.q);
-            //$scope.quests.answer = $scope.quests.answer.trim();
+            $scope.realAnswer = $scope.realAnswer.trim();
             console.log($scope.userAnswer);
             console.log($scope.realAnswer);
             if($scope.userAnswer == $scope.realAnswer) {
